@@ -15,7 +15,7 @@ Open the browser and navigate to localhost:9001 to see the demo.
 1. npm install
 2. npm build
 
-build/footoo-web-analytics-watcher.js is what you need
+build/nights-watch.js is what you need
 
 ## Documentation
 
