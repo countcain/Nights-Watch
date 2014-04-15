@@ -5,7 +5,7 @@ Watch the user's behavior when they visit a website page.
 
 ## For development
 
-1. npm install
+1. npm install & bower install
 2. npm start
 
 Open the browser and navigate to localhost:9001 to see the demo.
