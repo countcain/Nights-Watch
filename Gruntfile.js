@@ -29,7 +29,7 @@ module.exports = function(grunt) {
     watch: {
       src: {
         files: ['src/*.js'],
-        tasks: ['clean', 'jshint', 'concat', 'uglify']
+        tasks: ['clean', 'concat', 'uglify']
       }
     },
     connect: {
@@ -50,15 +50,17 @@ module.exports = function(grunt) {
       dist: {
         src: [
             'src/libs/platform.js',
-            "src/basic-data-collector.js",
+            "src/basicDataCollector.js",
             'src/cookies-generator.js',
-            'src/postman.js'
+            'src/postman.js',
+            'src/nightsWatcher.js',
+            'src/runner.js'
         ],
         dest: 'demo/development.js'
       }
     }
   });
 
-  grunt.registerTask('default', ['clean', 'jshint', 'concat', 'connect', 'watch']);
-  grunt.registerTask('build', ['clean', 'jshint', 'uglify', 'connect', 'watch']);
+  grunt.registerTask('default', ['clean', 'concat', 'connect', 'watch']);
+  grunt.registerTask('build', ['clean', 'uglify', 'connect', 'watch']);
 };
