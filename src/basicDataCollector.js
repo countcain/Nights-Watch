@@ -3,8 +3,11 @@
  */
 (function(){
   var basicDataCollector = (function(){
-    var collector = {"hello": "collector"};
+    var collector = {};
 
+    /**
+     * use userAgent to detect os language and browser
+     */
     collector.browser = (function(){
       var browser = {};
       var info = platform.parse(navigator.userAgent);
@@ -14,13 +17,19 @@
       return browser;
     })();
 
-    collector.interaction = (function(){
-      var interaction = {};
+    /**
+     * after dom render finished, get all the element required.
+     */
+    collector.interaction = function(element, event, callback){
+      if(element.id!==undefined){
+        document.getElementById(element.id);
+      }else if(element.class!==undefined){
+        document.getElementsByClassName(element.class);
+      }else{
+        document.getElementsByTagName(element.element);
+      }
+    };
 
-      var a_array = document.getElementsByTagName("a");
-      console.log(a_array);
-      return interaction;
-    })();
     return collector;
   })();
 

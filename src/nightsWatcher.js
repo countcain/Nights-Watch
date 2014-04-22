@@ -10,7 +10,12 @@
       }
     };
 
-    watcher.track = function(element, event, callback){};
+    watcher.track = function(element, event, callback){
+      basicDataCollector.interaction(element, event, function(elementChain){
+        //here post this event to server
+        callback(elementChain);
+      });
+    };
     return watcher;
   })(basicDataCollector);
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
