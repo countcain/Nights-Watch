@@ -12,6 +12,17 @@
     browser.type = info.name + " " +info.version;
     return browser;
   })();
-  console.log(exports.collector.browser);
+
+  exports.collector.interaction = (function(){
+    var interaction = {};
+
+    var a_array = document.getElementsByTagName("a");
+    console.log(a_array);
+    interaction.clickElements = a_array.concat(document.getElementsByTagName("button"));
+    console.log(interaction);
+    return interaction;
+  })();
+
   return exports;
+
 })(window.exports === undefined? this: exports);
