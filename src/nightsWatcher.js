@@ -7,13 +7,15 @@
     watcher.detect = function(directive, callback){
       if(directive==="userInfo"){
         callback(basicDataCollector.browser.type, basicDataCollector.browser.platform, basicDataCollector.browser.language);
+      }else if(directive==='page'){
+        callback(basicDataCollector.browser.url);
       }
     };
 
     watcher.track = function(element, event, callback){
-      basicDataCollector.interaction(element, event, function(elements){
-        //here post this event to server
-        callback(elements);
+      basicDataCollector.interaction(element, event, function(trackedEvent){
+        //here may store this event
+        callback(trackedEvent);
       });
     };
     return watcher;
