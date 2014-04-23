@@ -34,9 +34,16 @@
           collector.interactionNodeList.concat(nodeList);
         }
         if(node!==null){
-          callback(node);
+          node[event] = function(){
+            callback(node);
+          };
         }else{
-          callback(nodeList);
+          function eventHappen(i){
+            return callback(nodeList[i]);
+          }
+          for(var i=0; i<nodeList.length; i++){
+            nodeList[i][event] = eventHappen(i);
+          }
         }
       });
     };
