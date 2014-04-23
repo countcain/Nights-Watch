@@ -6,8 +6,11 @@
     taskM.taskArray = [];
     taskM.addTaskWhenDomLoaded = function(task){
       taskM.taskArray.push(task);
-      console.log(taskM.taskArray);
     };
+    if(window.onload!==null){
+      var currentF = window.onload;
+      taskM.taskArray.push(currentF);
+    }
     window.onload = function(){
       for(var i=0; i<taskM.taskArray.length; i++){
         taskM.taskArray[i]();

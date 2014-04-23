@@ -33,7 +33,7 @@
           nodeList = document.getElementsByTagName(element.element);
           collector.interactionNodeList.concat(nodeList);
         }
-        if(node===null){
+        if(node!==null){
           callback(node);
         }else{
           callback(nodeList);

@@ -9,7 +9,7 @@
   //first parameter could be "a class id", element could be any types in DOM
   //second parameter could be any event
   //third parameter is a callback function
-  nightsWatcher.track({element:"a"}, "hover", function(elements){
+  nightsWatcher.track({element:"a", id:"link_one"}, "hover", function(elements){
     console.log(elements);
   });
 })(nightsWatcher);
