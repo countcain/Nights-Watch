@@ -11,9 +11,9 @@
     };
 
     watcher.track = function(element, event, callback){
-      basicDataCollector.interaction(element, event, function(elementChain){
+      basicDataCollector.interaction(element, event, function(elements){
         //here post this event to server
-        callback(elementChain);
+        callback(elements);
       });
     };
     return watcher;

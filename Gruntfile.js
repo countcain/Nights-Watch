@@ -50,6 +50,7 @@ module.exports = function(grunt) {
       dist: {
         src: [
             'src/libs/platform.js',
+            'src/taskManager.js',
             "src/basicDataCollector.js",
             'src/cookies-generator.js',
             'src/postman.js',

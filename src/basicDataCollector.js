@@ -1,10 +1,9 @@
 /**
  * basicDataCollector:
  */
-(function(){
-  var basicDataCollector = (function(){
+(function(taskManager){
+  var basicDataCollector = (function(taskManager){
     var collector = {};
-
     /**
      * use userAgent to detect os language and browser
      */
@@ -20,18 +19,30 @@
     /**
      * after dom render finished, get all the element required.
      */
+    collector.interactionNodeList = [];
     collector.interaction = function(element, event, callback){
-      if(element.id!==undefined){
-        document.getElementById(element.id);
-      }else if(element.class!==undefined){
-        document.getElementsByClassName(element.class);
-      }else{
-        document.getElementsByTagName(element.element);
-      }
+      taskManager.addTaskWhenDomLoaded(function(){
+        var node, nodeList;
+        if(element.id!==undefined){
+          node = document.getElementById(element.id);
+          collector.interactionNodeList.push(node);
+        }else if(element.class!==undefined){
+          nodeList = document.getElementsByClassName(element.class);
+          collector.interactionNodeList.concat(nodeList);
+        }else{
+          nodeList = document.getElementsByTagName(element.element);
+          collector.interactionNodeList.concat(nodeList);
+        }
+        if(node===null){
+          callback(node);
+        }else{
+          callback(nodeList);
+        }
+      });
     };
 
     return collector;
-  })();
+  })(taskManager);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = basicDataCollector;
@@ -47,4 +58,4 @@
     }
   }
 
-})();
+})(taskManager);
