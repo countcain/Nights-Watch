@@ -1,6 +1,8 @@
 /**
  * basicDataCollector:
  */
+'use strict';
+
 (function(taskManager){
   var basicDataCollector = (function(taskManager){
     var collector = {};
@@ -39,37 +41,7 @@
      */
     collector.interactionNodeList = [];
     collector.interaction = function(element, event, callback){
-      taskManager.addTaskWhenDomLoaded(function(){
-        var node=null, nodeList=null;
-        if(element.id!==undefined){
-          node = document.getElementById(element.id);
-          collector.interactionNodeList.push(node);
-        }else if(element.class!==undefined){
-          nodeList = document.getElementsByClassName(element.className);
-          collector.interactionNodeList.concat(nodeList);
-        }else{
-          nodeList = document.getElementsByTagName(element.element);
-          collector.interactionNodeList.concat(nodeList);
-        }
-        if(node!==null){
-          var currentE = null;
-          if(node[event]!==null){
-            currentE = node[event];
-          }
-          node[event] = function(){
-            if(currentE!==null) currentE();
-            var re = {
-              tagName: node.tagName,
-              id: node.id,
-              className: node.className,
-              innerContent: node.innerText,
-              event: event,
-              date: new Date()
-            };
-            callback(re);
-          };
-        }else{
-          function eventHappen(node){
+      function eventHappen(node){
             return function(){
               var currentE = null;
               if(node[event]!==null){
@@ -89,6 +61,21 @@
               };
             }()
           }
+      taskManager.addTaskWhenDomLoaded(function(){
+        var node=null, nodeList=null;
+        if(element.id!==undefined){
+          node = document.getElementById(element.id);
+          collector.interactionNodeList.push(node);
+        }else if(element.class!==undefined){
+          nodeList = document.getElementsByClassName(element.className);
+          collector.interactionNodeList.concat(nodeList);
+        }else{
+          nodeList = document.getElementsByTagName(element.element);
+          collector.interactionNodeList.concat(nodeList);
+        }
+        if(node!==null){
+          eventHappen(node);
+        }else{
           for(var i=0; i<nodeList.length; i++){
             eventHappen(nodeList[i]);
           }
