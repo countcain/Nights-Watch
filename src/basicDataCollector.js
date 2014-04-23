@@ -22,7 +22,7 @@
     collector.interactionNodeList = [];
     collector.interaction = function(element, event, callback){
       taskManager.addTaskWhenDomLoaded(function(){
-        var node, nodeList;
+        var node=null, nodeList=null;
         if(element.id!==undefined){
           node = document.getElementById(element.id);
           collector.interactionNodeList.push(node);
@@ -39,7 +39,9 @@
           };
         }else{
           function eventHappen(i){
-            return callback(nodeList[i]);
+            return function(){
+              callback(nodeList[i]);
+            }
           }
           for(var i=0; i<nodeList.length; i++){
             nodeList[i][event] = eventHappen(i);

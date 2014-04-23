@@ -12,4 +12,7 @@
   nightsWatcher.track({element:"a", id:"link_one"}, "onclick", function(elements){
     console.log(elements);
   });
+  nightsWatcher.track({element:"button"}, "onmouseover", function(elements){
+    console.log(elements);
+  });
 })(nightsWatcher);
