@@ -82,7 +82,6 @@
         }
       });
     };
-
     return collector;
   })(taskManager);
 
