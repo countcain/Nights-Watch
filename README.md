@@ -50,6 +50,14 @@ A user maps directly to a unique client-side cookie. It contains the following p
 * **`Joindate`**: timestamp when the user joined.
 * **`Platform`**: user's operating system.
 * **`Browser`**: user's browser.
+* **`Language`**: user's agent language.
 * **`Country`**: geolocation data.
 * **`Region`**: geolocation data.
 * **`City`**: geolocation data.
+
+#Usage
+
+Currently, we have following methods for detecting and tracking users behaviors which returns the data as data format shows.
+
+
+

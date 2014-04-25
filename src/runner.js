@@ -3,20 +3,55 @@
  */
 'use strict';
 (function(nightsWatcher){
-  nightsWatcher.detect("userInfo", function(os, browser, language){
-    console.log(os, browser, language);
+
+  nightsWatcher.config(
+      {
+        server: "localhost:9002"
+      }
+  );
+
+  /** function identify
+   * parameter:
+   *    user: if you have a server which store the existing user, pass this param, the function will detect whether
+   *            there is a existing user based on the client-side cookie.
+   *          if yes, retrieve that and return the userInfo, userType will be 'existing'.
+   *          if no, return the userInfo, userType will be 'new'. In the meantime, a new user will be added into server.
+   *    null: if we do not won't to judge the user is new or existing, just pass no param to this function.
+   *          The function will only return the userInfo.
+   * return:
+   *    userInfo:
+   *    userType: new or existing or null
+   */
+  nightsWatcher.identify("user", function(userInfo, userType){
+    console.log(userInfo, userType);
   });
-  nightsWatcher.detect("page", function(urlArray){
-    console.log(urlArray);
+  nightsWatcher.identify(function(userInfo){
+    console.log(userInfo);
   });
 
-  //first parameter could be "a class id", element could be any types in DOM
-  //second parameter could be any event: onclick onmouseover
-  //third parameter is a callback function
+  /**
+   * waiting for visitingStart event.
+   *
+   * return: visitObject
+   */
+  nightsWatcher.on("visitingStart", function(visitObject){
+    console.log(visitObject);
+  });
+
+  /**
+   * Event trigger.
+   * parameter:
+   *    dom object: {element:tagName, id:tagId, className:tagClassName}
+   *    type: dom element event
+   *    function: callback
+   * return:
+   *    event object
+   */
   nightsWatcher.track({element:"a", id:"link_one"}, "onclick", function(trackedEvent){
     console.log(trackedEvent);
   });
   nightsWatcher.track({element:"button"}, "onmouseover", function(trackedEvent){
     console.log(trackedEvent);
   });
+
 })(nightsWatcher);

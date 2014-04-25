@@ -4,12 +4,12 @@
   var nightsWatcher = (function(basicDataCollector){
     var watcher = {};
 
-    watcher.detect = function(directive, callback){
-      if(directive==="userInfo"){
-        callback(basicDataCollector.browser.type, basicDataCollector.browser.platform, basicDataCollector.browser.language);
-      }else if(directive==='page'){
-        callback(basicDataCollector.browser.url);
-      }
+    watcher.config = function(configObject){
+
+    };
+
+    watcher.identify = function(directive){
+
     };
 
     watcher.track = function(element, event, callback){
@@ -20,6 +20,12 @@
     };
     return watcher;
   })(basicDataCollector);
+
+
+
+
+
+
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = nightsWatcher;
   }

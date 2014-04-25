@@ -66,7 +66,7 @@
         if(element.id!==undefined){
           node = document.getElementById(element.id);
           collector.interactionNodeList.push(node);
-        }else if(element.class!==undefined){
+        }else if(element.className!==undefined){
           nodeList = document.getElementsByClassName(element.className);
           collector.interactionNodeList.concat(nodeList);
         }else{
