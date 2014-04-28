@@ -1,15 +1,37 @@
 'use strict';
 
-(function(basicDataCollector){
-  var nightsWatcher = (function(basicDataCollector){
+(function(basicDataCollector, cookiesManager, taskManager){
+  var nightsWatcher = (function(basicDataCollector, cookiesManager, taskManager){
     var watcher = {};
 
     watcher.config = function(configObject){
-
     };
 
-    watcher.identify = function(directive){
+    watcher.identify = function(arg1, arg2){
+      taskManager.addAsyncTask(function(arg1, arg2){
+        var obj = {
+          Platform: basicDataCollector.browser.platform,
+          Browser: basicDataCollector.browser.type,
+          Language: basicDataCollector.browser.language,
+          Country: basicDataCollector.geoLocation.country,
+          City: basicDataCollector.geoLocation.city,
+          Region: basicDataCollector.geoLocation.region
+        };
+        if(typeof arg1 === 'function'){
+          arg1(obj);
+        }else{
+          if(arg1==='user'){
+            arg2(obj, "new");
+          }
+        }
+        taskManager.finishAsyncTask();
+      }, null, [arg1, arg2]);
+    };
 
+    watcher.on = function(directive, callback){
+      if(directive==='visitingStart'){
+        callback({});
+      }
     };
 
     watcher.track = function(element, event, callback){
@@ -19,10 +41,7 @@
       });
     };
     return watcher;
-  })(basicDataCollector);
-
-
-
+  })(basicDataCollector, cookiesManager, taskManager);
 
 
 
@@ -39,4 +58,4 @@
       window.nightsWatcher = nightsWatcher;
     }
   }
-})(basicDataCollector);
+})(basicDataCollector, cookiesManager, taskManager);

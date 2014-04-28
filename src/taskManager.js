@@ -3,17 +3,46 @@
 (function(){
   var taskManager = (function(){
     var taskM = {};
-    taskM.taskArray = [];
+
+    /**
+     * use for event which will be exec after dom loaded
+     * @type {Array}
+     */
+    taskM.domTaskArray = [];
     taskM.addTaskWhenDomLoaded = function(task){
-      taskM.taskArray.push(task);
+      taskM.domTaskArray.push(task);
     };
+
+    /**
+     * this is the event loop
+     * @type {Array}
+     */
+    taskM.asyncTask = [];
+    taskM.addAsyncTask = function(task, self, arguArray){
+      taskM.asyncTask.push({
+        task: task,
+        self: self,
+        arguArray: arguArray
+      });
+      if(taskM.asyncTask.length==1){
+        taskM.asyncTask[0].task.apply(taskM.asyncTask[0].self, taskM.asyncTask[0].arguArray);
+      }
+    };
+    taskM.finishAsyncTask = function(){
+      taskM.asyncTask.shift();
+      if(taskM.asyncTask.length!==0){
+        taskM.asyncTask[0].task.apply(taskM.asyncTask[0].self, taskM.asyncTask[0].arguArray);
+      }
+    };
+
+
     if(window.onload!==null){
       var currentF = window.onload;
-      taskM.taskArray.push(currentF);
+      taskM.domTaskArray.push(currentF);
     }
     window.onload = function(){
-      for(var i=0; i<taskM.taskArray.length; i++){
-        taskM.taskArray[i]();
+      for(var i=0; i<taskM.domTaskArray.length; i++){
+        taskM.domTaskArray[i]();
       }
     };
     return taskM;

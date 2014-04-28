@@ -23,10 +23,10 @@
    *    userType: new or existing or null
    */
   nightsWatcher.identify("user", function(userInfo, userType){
-    console.log(userInfo, userType);
+    console.log("runner identify user", userInfo, userType);
   });
   nightsWatcher.identify(function(userInfo){
-    console.log(userInfo);
+    console.log("runner identify", userInfo);
   });
 
   /**
@@ -35,7 +35,6 @@
    * return: visitObject
    */
   nightsWatcher.on("visitingStart", function(visitObject){
-    console.log(visitObject);
   });
 
   /**

@@ -51,9 +51,9 @@ module.exports = function(grunt) {
         src: [
             'src/libs/platform.js',
             'src/taskManager.js',
-            "src/basicDataCollector.js",
-            'src/cookies-generator.js',
             'src/postman.js',
+            "src/basicDataCollector.js",
+            'src/cookiesManager.js',
             'src/nightsWatcher.js',
             'src/runner.js'
         ],

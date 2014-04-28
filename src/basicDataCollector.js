@@ -3,8 +3,8 @@
  */
 'use strict';
 
-(function(taskManager){
-  var basicDataCollector = (function(taskManager){
+(function(taskManager, postman){
+  var basicDataCollector = (function(taskManager, postman){
     var collector = {};
     /**
      * use userAgent to detect os language and browser
@@ -82,8 +82,30 @@
         }
       });
     };
+
+    /**
+     * getIp and calculate location
+     * has city region country ip
+     */
+    collector.geoLocation = (function(){
+      var geoLocation = {};
+      taskManager.addAsyncTask(function(){
+        var self = this;
+        postman.get("http://ipinfo.io", null, function(data){
+          self.city = data.city;
+          self.region = data.region;
+          self.country = data.country;
+          self.ip = data.ip;
+          taskManager.finishAsyncTask();
+        });
+      }, geoLocation);
+      return geoLocation;
+    })();
+
+    console.log("Here is basicDataCollector object", collector);
     return collector;
-  })(taskManager);
+  })(taskManager, postman);
+
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = basicDataCollector;
@@ -98,5 +120,4 @@
       window.basicDataCollector = basicDataCollector;
     }
   }
-
-})(taskManager);
+})(taskManager, postman);
