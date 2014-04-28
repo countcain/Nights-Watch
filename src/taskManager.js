@@ -24,12 +24,14 @@
         self: self,
         arguArray: arguArray
       });
-      if(taskM.asyncTask.length==1){
-        taskM.asyncTask[0].task.apply(taskM.asyncTask[0].self, taskM.asyncTask[0].arguArray);
-      }
     };
     taskM.finishAsyncTask = function(){
       taskM.asyncTask.shift();
+      if(taskM.asyncTask.length!==0){
+        taskM.asyncTask[0].task.apply(taskM.asyncTask[0].self, taskM.asyncTask[0].arguArray);
+      }
+    };
+    taskM.asyncTaskExec = function(){
       if(taskM.asyncTask.length!==0){
         taskM.asyncTask[0].task.apply(taskM.asyncTask[0].self, taskM.asyncTask[0].arguArray);
       }

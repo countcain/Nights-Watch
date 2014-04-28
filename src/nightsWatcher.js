@@ -40,6 +40,10 @@
         callback(trackedEvent);
       });
     };
+
+    watcher.run = function(){
+      taskManager.asyncTaskExec();
+    };
     return watcher;
   })(basicDataCollector, cookiesManager, taskManager);
 

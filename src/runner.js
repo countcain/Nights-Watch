@@ -47,10 +47,13 @@
    *    event object
    */
   nightsWatcher.track({element:"a", id:"link_one"}, "onclick", function(trackedEvent){
-    console.log(trackedEvent);
+    console.log("runner track event", trackedEvent);
   });
   nightsWatcher.track({element:"button"}, "onmouseover", function(trackedEvent){
-    console.log(trackedEvent);
+    console.log("runner track event", trackedEvent);
   });
+
+
+  nightsWatcher.run();
 
 })(nightsWatcher);
