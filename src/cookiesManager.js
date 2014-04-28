@@ -1,30 +1,33 @@
 'use strict';
-(function(taskManager, basicDataCollector){
-  var cookiesManager = (function(taskManager){
+(function(taskManager, basicDataCollector, postman){
+  var cookiesManager = (function(taskManager, basicDataCollector, postman){
     var cookiesM = {};
 
     cookiesM.currentUser = window.localStorage.getItem("uniqueUserCookie");
+    cookiesM.joinDate = window.localStorage.getItem("joinDate");
     /**
      * if currentUser cookie is null, generate a new one.
      */
     if(!cookiesM.currentUser){
-//      taskManager.addAsyncTask(function(basicData){
-//        var shaObj = new jsSHA(
-//            basicData.browser.platform +
-//            basicData.browser.type +
-//            basicData.browser.language +
-//            basicData.geoLocation.ip +
-//            new Date().toString,
-//            "TEXT"
-//        );
-//        cookiesM.currentUser = shaObj.getHash("SHA-1", "HEX");
-//        console.log(cookiesM.currentUser);
-//        taskManager.finishAsyncTask();
-//      }, cookiesM, [basicDataCollector]);
+      taskManager.addAsyncTask(function(basicData){
+        var req =
+            basicData.browser.platform +
+            basicData.browser.type +
+            basicData.browser.language +
+            basicData.geoLocation.ip +
+            new Date().toString();
+        postman.get( 'http://jssha.mrpeach.me', {text:req, type:'TEXT'}, function(data){
+          cookiesM.currentUser = data.hash;
+          cookiesM.joinDate = new Date().toString();
+          window.localStorage.setItem("uniqueUserCookie", cookiesM.currentUser);
+          window.localStorage.setItem("joinDate", cookiesM.joinDate);
+          taskManager.finishAsyncTask();
+        });
+      }, cookiesM, [basicDataCollector]);
     }
     console.log("Here is cookiesM object", cookiesM);
     return cookiesM;
-  })(taskManager, basicDataCollector);
+  })(taskManager, basicDataCollector, postman);
 
 
 
@@ -41,4 +44,4 @@
       window.cookiesManager = cookiesManager;
     }
   }
-})(taskManager, basicDataCollector);
+})(taskManager, basicDataCollector, postman);

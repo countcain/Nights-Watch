@@ -21,7 +21,9 @@
           arg1(obj);
         }else{
           if(arg1==='user'){
-            arg2(obj, "new");
+            obj.UserId = cookiesManager.currentUser;
+            obj.JoinDate = cookiesManager.joinDate;
+            arg2(obj, "UniqueUser");
           }
         }
         taskManager.finishAsyncTask();
