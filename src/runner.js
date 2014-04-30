@@ -25,9 +25,9 @@
   nightsWatcher.identify("user", function(userInfo, userType){
     console.log("runner identify user", userInfo, userType);
   });
-  nightsWatcher.identify(function(userInfo){
-    console.log("runner identify", userInfo);
-  });
+//  nightsWatcher.identify(function(userInfo){
+//    console.log("runner identify", userInfo);
+//  });
 
   /**
    * waiting for visitingStart event.

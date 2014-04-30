@@ -18,11 +18,13 @@
           Region: basicDataCollector.geoLocation.region
         };
         if(typeof arg1 === 'function'){
+          watcher.user = obj;
           arg1(obj);
         }else{
           if(arg1==='user'){
             obj.UserId = cookiesManager.currentUser;
             obj.JoinDate = cookiesManager.joinDate;
+            watcher.user = obj;
             arg2(obj, "UniqueUser");
           }
         }
