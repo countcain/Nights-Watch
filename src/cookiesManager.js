@@ -4,11 +4,12 @@
     var cookiesM = {};
 
     cookiesM.currentUser = window.localStorage.getItem("uniqueUserCookie");
-    cookiesM.joinDate = window.localStorage.getItem("joinDate");
+    cookiesM.joindate = window.localStorage.getItem("joindate");
     /**
      * if currentUser cookie is null, generate a new one.
      */
     if(!cookiesM.currentUser){
+      cookiesM.userType = "new";
       taskManager.addAsyncTask(function(basicData){
         var req =
             basicData.browser.platform +
@@ -18,12 +19,15 @@
             new Date().toString();
         postman.get( 'http://jssha.mrpeach.me', {text:req, type:'TEXT'}, function(data){
           cookiesM.currentUser = data.hash;
-          cookiesM.joinDate = new Date().toString();
+          cookiesM.joindate = new Date().toString();
           window.localStorage.setItem("uniqueUserCookie", cookiesM.currentUser);
-          window.localStorage.setItem("joinDate", cookiesM.joinDate);
+          window.localStorage.setItem("joindate", cookiesM.joindate);
           taskManager.finishAsyncTask();
         });
       }, cookiesM, [basicDataCollector]);
+    }
+    else{
+      cookiesM.userType = "existing";
     }
     console.log("Here is cookiesM object", cookiesM);
     return cookiesM;

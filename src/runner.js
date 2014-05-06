@@ -20,7 +20,7 @@
    *          The function will only return the userInfo.
    * return:
    *    userInfo:
-   *    userType: new or existing or null
+   *    userType: new or existing
    */
   nightsWatcher.identify("user", function(userInfo, userType){
     console.log("runner identify user", userInfo, userType);
@@ -35,6 +35,7 @@
    * return: visitObject
    */
   nightsWatcher.on("visitingStart", function(visitObject){
+    console.log("visitingStart", visitObject);
   });
 
   /**

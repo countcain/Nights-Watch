@@ -25,15 +25,21 @@
             obj.UserId = cookiesManager.currentUser;
             obj.JoinDate = cookiesManager.joinDate;
             watcher.user = obj;
-            arg2(obj, "UniqueUser");
+            arg2(obj, cookiesManager.userType);
           }
         }
         taskManager.finishAsyncTask();
       }, null, [arg1, arg2]);
     };
 
+    /**
+     * store the start event
+     * @param directive
+     * @param callback
+     */
     watcher.on = function(directive, callback){
       if(directive==='visitingStart'){
+        var startDate = new Date();
         callback({});
       }
     };
