@@ -2,14 +2,19 @@
   "name" : "nights-watch",
   "description" : "Watch the user's behavior when they visit a website page. ",
   "version" : "0.0.1",
+  "author": "Cain Wong <countcainht@gmail.com>",
+  "homepage": "https://github.com/countcain/Nights-Watch",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/countcain/Nights-Watch.git"
+  },
   "keywords" : ["web", "analytics"],
   "maintainers" : [{
     "name": "Cain Wong",
     "email": "countcainht@gmail.com",
     "web": "http://mrpeach.me"
   }],
-  "licenses": [],
-  "repository" : "https://github.com/countcain/Nights-Watch",
+  "license": "MIT",
   "dependencies" : {
     "bower": "~1.3.2",
     "grunt": "~0.4.4",

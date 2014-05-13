@@ -3,6 +3,8 @@ Nights-Watch
 
 Watch the user's behavior when they visit a website page.
 
+    npm install nights-watch
+
 #Installation
 
 1. npm install & bower install
