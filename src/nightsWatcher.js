@@ -2,8 +2,34 @@
 
 (function(basicDataCollector, cookiesManager, taskManager){
   var nightsWatcher = (function(basicDataCollector, cookiesManager, taskManager){
-    var watcher = {};
 
+    /**
+     * contains:
+     *  watcher.user = {
+     *     Platform: String,
+     *     Browser: String,
+     *     Language: String,
+     *     Country: String,
+     *     City: String,
+     *     Region: String,
+     *     UserId: String,
+     *     JoinDate: String
+     *  }
+     *  watcher.visit = {
+     *     Time: String
+     *  }
+     *  watcher
+     * @type {{}}
+     */
+    var watcher = {
+      user: null,
+      visit: null
+    };
+
+    /**
+     * require
+     * @param configObject
+     */
     watcher.config = function(configObject){
     };
 
@@ -23,7 +49,7 @@
         }else{
           if(arg1==='user'){
             obj.UserId = cookiesManager.currentUser;
-            obj.JoinDate = cookiesManager.joinDate;
+            obj.JoinDate = cookiesManager.joindate;
             watcher.user = obj;
             arg2(obj, cookiesManager.userType);
           }
@@ -39,8 +65,11 @@
      */
     watcher.on = function(directive, callback){
       if(directive==='visitingStart'){
-        var startDate = new Date();
-        callback({});
+        var startDate = new Date().toString();
+        watcher.visit = {
+          Time: startDate
+        };
+        callback(watcher.visit);
       }
     };
 
@@ -56,8 +85,6 @@
     };
     return watcher;
   })(basicDataCollector, cookiesManager, taskManager);
-
-
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = nightsWatcher;

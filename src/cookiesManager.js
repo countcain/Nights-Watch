@@ -3,8 +3,8 @@
   var cookiesManager = (function(taskManager, basicDataCollector, postman){
     var cookiesM = {};
 
-    cookiesM.currentUser = window.localStorage.getItem("uniqueUserCookie");
-    cookiesM.joindate = window.localStorage.getItem("joindate");
+    cookiesM.currentUser = window.localStorage.getItem("nwuUC");
+    cookiesM.joindate = window.localStorage.getItem("nwjd");
     /**
      * if currentUser cookie is null, generate a new one.
      */
@@ -20,8 +20,8 @@
         postman.get( 'http://jssha.mrpeach.me', {text:req, type:'TEXT'}, function(data){
           cookiesM.currentUser = data.hash;
           cookiesM.joindate = new Date().toString();
-          window.localStorage.setItem("uniqueUserCookie", cookiesM.currentUser);
-          window.localStorage.setItem("joindate", cookiesM.joindate);
+          window.localStorage.setItem("nwuUC", cookiesM.currentUser);
+          window.localStorage.setItem("nwjd", cookiesM.joindate);
           taskManager.finishAsyncTask();
         });
       }, cookiesM, [basicDataCollector]);

@@ -12,6 +12,10 @@ Watch the user's behavior when they visit a website page.
 
 Open the browser and navigate to localhost:9001 to see the demo.
 
+#Usage
+
+Currently, we have following methods for detecting and tracking users behaviors which returns the data as data format shows.
+
 #Data Format
 > This tool's power comes from automatically capturing all the user interactions that happen in visitors' browser.This data is sanitized and organized into the following hierarchy for you, where users have many visits and visits have many events.
 
@@ -57,9 +61,7 @@ A user maps directly to a unique client-side cookie. It contains the following p
 * **`Region`**: geolocation data.
 * **`City`**: geolocation data.
 
-#Usage
 
-Currently, we have following methods for detecting and tracking users behaviors which returns the data as data format shows.
 
 
 

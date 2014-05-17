@@ -6,7 +6,8 @@
 
   nightsWatcher.config(
       {
-        server: "localhost:9002"
+        server: "localhost:9002",
+        domainToken: "Hey, I am a token."
       }
   );
 
@@ -35,7 +36,7 @@
    * return: visitObject
    */
   nightsWatcher.on("visitingStart", function(visitObject){
-    console.log("visitingStart", visitObject);
+    console.log("runner visitingStart", visitObject);
   });
 
   /**
