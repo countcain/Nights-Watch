@@ -34,7 +34,6 @@
   })(taskManager, basicDataCollector, postman);
 
 
-
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = cookiesManager;
   }

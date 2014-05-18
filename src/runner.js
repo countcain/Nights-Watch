@@ -55,7 +55,6 @@
     console.log("runner track event", trackedEvent);
   });
 
-
   nightsWatcher.run();
 
 })(nightsWatcher);
