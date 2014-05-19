@@ -18,9 +18,11 @@ module.exports = function(grunt) {
       my_target: {
         files: {
           'build/nights-watch.js' : [
-            'src/basic-data-collector.js',
-            'src/cookies-generator.js',
-            'src/postman.js'
+            'src/taskManager.js',
+            'src/postman.js',
+            "src/basicDataCollector.js",
+            'src/cookiesManager.js',
+            'src/nightsWatcher.js',
           ]
         }
       }

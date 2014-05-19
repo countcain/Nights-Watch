@@ -6,7 +6,7 @@
 
   nightsWatcher.config(
       {
-        server: "localhost:9002",
+        server: "http://localhost:9002",
         domainToken: "Hey, I am a token."
       }
   );

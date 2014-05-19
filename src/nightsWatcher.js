@@ -1,7 +1,7 @@
 'use strict';
 
-(function(basicDataCollector, cookiesManager, taskManager){
-  var nightsWatcher = (function(basicDataCollector, cookiesManager, taskManager){
+(function(basicDataCollector, cookiesManager, taskManager, postman){
+  var nightsWatcher = (function(basicDataCollector, cookiesManager, taskManager, postman){
 
     /**
      * contains:
@@ -26,7 +26,8 @@
     var watcher = {
       user: null,
       visit: {},
-      events: []
+      events: [],
+      configObj:{}
     };
 
     /**
@@ -34,6 +35,7 @@
      * @param configObject
      */
     watcher.config = function(configObject){
+      watcher.configObj = configObject;
     };
 
     watcher.identify = function(arg1, arg2){
@@ -86,10 +88,34 @@
     };
 
     watcher.run = function(){
+      taskManager.addAsyncTask(function(){
+        var self = this;
+        postman.get(self.configObj.server, {type:1, token: self.configObj.domainToken, data: self.user}, function(data){
+          postman.get(self.config.server, {type:2, token:self.configObj.domainToken, data: self.visit}, function(data){
+            self.visit.id = data;
+            taskManager.finishAsyncTask();
+            console.log("1");
+          });
+        });
+      }, watcher);
+      taskManager.addAsyncTask(function(){
+        var self = this;
+        setInterval(function(){
+          for(var i=0;  i < self.events.length; i++){
+            self.events[i].visitId = self.visit.id;
+          }
+          postman.get(self.configObj.server, {type:3, token:self.configObj.domainToken, data:self.events}, function(data){
+            taskManager.finishAsyncTask();
+            self.events = [];
+            console.log("post events");//take site token and type
+          });
+        }, 1000*2);
+        taskManager.finishAsyncTask();
+      }, watcher);
       taskManager.asyncTaskExec();
     };
     return watcher;
-  })(basicDataCollector, cookiesManager, taskManager);
+  })(basicDataCollector, cookiesManager, taskManager, postman);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = nightsWatcher;
@@ -104,4 +130,4 @@
       window.nightsWatcher = nightsWatcher;
     }
   }
-})(basicDataCollector, cookiesManager, taskManager);
+})(basicDataCollector, cookiesManager, taskManager, postman);

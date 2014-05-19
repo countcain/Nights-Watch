@@ -1,6 +1,5 @@
 .idea
 node_modules
-build
 demo/development.js
 demo/libs
 .gitignore
