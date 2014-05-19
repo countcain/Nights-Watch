@@ -10,11 +10,21 @@
      * use userAgent to detect os language and browser
      */
     collector.browser = (function(){
-      var browser = {};
-      var info = platform.parse(navigator.userAgent);
+      var browser = {
+        platform: "",
+        type: ""
+      };
+
+      taskManager.addAsyncTask(function(userAgent){
+        var self = this;
+        postman.get("http://mrpeach.me:3458", {userAgent:userAgent}, function(data){
+          self.platform = data.os.family+" "+data.os.version;
+          self.type = data.name+ " "+ data.version;
+          taskManager.finishAsyncTask();
+        });
+      }, browser, [navigator.userAgent]);
+
       browser.language = navigator.language || navigator.userLanguage || navigator.systemLanguage;
-      browser.platform = info.os.toString();
-      browser.type = info.name + " " +info.version;
 
       /**
        * the browser.url will be a array:

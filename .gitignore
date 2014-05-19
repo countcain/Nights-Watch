@@ -5,3 +5,4 @@ demo/development.js
 demo/libs
 .gitignore
 npm-debug.log
+.DS_Store

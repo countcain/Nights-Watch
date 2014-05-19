@@ -63,5 +63,4 @@
       window.taskManager = taskManager;
     }
   }
-
 })();

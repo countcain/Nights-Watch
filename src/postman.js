@@ -1,5 +1,5 @@
 'use strict';
-(function(taskManager){
+(function(){
   /*
    * Lightweight JSONP fetcher
    * Usage:
@@ -9,7 +9,7 @@
    * });
    */
   var postman = (function(){
-    var counter = 0, head, window = this, config = {};
+    var counter = 0, head, config = {};
     function load(url, pfnError) {
       var script = document.createElement('script'),
           done = false;
@@ -53,7 +53,6 @@
           query += encode(key) + "=" + encode(params[key]) + "&";
         }
       }
-
       window[ uniqueName ] = function(data){
         callback(data);
         try {
@@ -74,8 +73,6 @@
     };
   }());
 
-
-
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = postman;
   }
@@ -89,4 +86,4 @@
       window.postman = postman;
     }
   }
-})(taskManager);
+})();
