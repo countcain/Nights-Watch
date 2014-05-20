@@ -1,1 +1,475 @@
-"use strict";!function(){var taskManager=function(){var taskM={};if(taskM.domTaskArray=[],taskM.addTaskWhenDomLoaded=function(task){taskM.domTaskArray.push(task)},taskM.asyncTask=[],taskM.addAsyncTask=function(task,self,arguArray){taskM.asyncTask.push({task:task,self:self,arguArray:arguArray})},taskM.finishAsyncTask=function(){taskM.asyncTask.shift(),0!==taskM.asyncTask.length&&taskM.asyncTask[0].task.apply(taskM.asyncTask[0].self,taskM.asyncTask[0].arguArray)},taskM.asyncTaskExec=function(){0!==taskM.asyncTask.length&&taskM.asyncTask[0].task.apply(taskM.asyncTask[0].self,taskM.asyncTask[0].arguArray)},null!==window.onload){var currentF=window.onload;taskM.domTaskArray.push(currentF)}return window.onload=function(){for(var i=0;i<taskM.domTaskArray.length;i++)taskM.domTaskArray[i]()},taskM}();"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=taskManager:"function"==typeof define&&define.amd?define([],function(){return taskManager}):window.taskManager=taskManager}(),function(){var postman=function(){function load(url,pfnError){var script=document.createElement("script"),done=!1;script.src=url,script.async=!0;var errorHandler=pfnError||config.error;"function"==typeof errorHandler&&(script.onerror=function(ex){errorHandler({url:url,event:ex})}),script.onload=script.onreadystatechange=function(){done||this.readyState&&"loaded"!==this.readyState&&"complete"!==this.readyState||(done=!0,script.onload=script.onreadystatechange=null,script&&script.parentNode&&script.parentNode.removeChild(script))},head||(head=document.getElementsByTagName("head")[0]),head.appendChild(script)}function encode(str){return encodeURIComponent(str)}function jsonp(url,params,callback,callbackName){var key,query=-1===(url||"").indexOf("?")?"?":"&";callbackName=callbackName||config.callbackName||"callback";var uniqueName=callbackName+"_json"+ ++counter;params=params||{};for(key in params)params.hasOwnProperty(key)&&(query+=encode(key)+"="+encode(params[key])+"&");return window[uniqueName]=function(data){callback(data);try{delete window[uniqueName]}catch(e){}window[uniqueName]=null},load(url+query+callbackName+"="+uniqueName),uniqueName}function setDefaults(obj){config=obj}var head,counter=0,config={};return{get:jsonp,init:setDefaults}}();"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=postman:"function"==typeof define&&define.amd?define([],function(){return postman}):window.postman=postman}(),function(taskManager,postman){var basicDataCollector=function(taskManager,postman){var collector={};return collector.browser=function(){var browser={platform:"",type:""};taskManager.addAsyncTask(function(userAgent){var self=this;postman.get("http://mrpeach.me:3458",{userAgent:userAgent},function(data){self.platform=data.os.family+" "+data.os.version,self.type=data.name+" "+data.version,taskManager.finishAsyncTask()})},browser,[navigator.userAgent]),browser.language=navigator.language||navigator.userLanguage||navigator.systemLanguage;var parse_url=/^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;return browser.url=parse_url.exec(document.URL),browser}(),collector.interactionNodeList=[],collector.interaction=function(element,event,callback){function eventHappen(node){return function(){var currentE=null;null!==node[event]&&(currentE=node[event]),node[event]=function(){null!==currentE&&currentE();var re={targetTag:node.tagName,targetId:node.id,targetClass:node.className,innerContent:node.innerText,type:event,time:new Date,domain:collector.browser.url[3],path:collector.browser.url[5],hash:collector.browser.url[7],query:collector.browser.url[6]};callback(re)}}()}taskManager.addTaskWhenDomLoaded(function(){var node=null,nodeList=null;if(void 0!==element.id?(node=document.getElementById(element.id),collector.interactionNodeList.push(node)):void 0!==element.className?(nodeList=document.getElementsByClassName(element.className),collector.interactionNodeList.concat(nodeList)):(nodeList=document.getElementsByTagName(element.element),collector.interactionNodeList.concat(nodeList)),null!==node)eventHappen(node);else for(var i=0;i<nodeList.length;i++)eventHappen(nodeList[i])})},collector.geoLocation=function(){var geoLocation={};return taskManager.addAsyncTask(function(){var self=this;postman.get("http://ipinfo.io",null,function(data){self.city=data.city,self.region=data.region,self.country=data.country,self.ip=data.ip,taskManager.finishAsyncTask()})},geoLocation),geoLocation}(),console.log("Here is basicDataCollector object",collector),collector}(taskManager,postman);"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=basicDataCollector:"function"==typeof define&&define.amd?define([],function(){return basicDataCollector}):window.basicDataCollector=basicDataCollector}(taskManager,postman),function(taskManager,basicDataCollector,postman){var cookiesManager=function(taskManager,basicDataCollector,postman){var cookiesM={};return cookiesM.currentUser=window.localStorage.getItem("nwuUC"),cookiesM.joindate=window.localStorage.getItem("nwjd"),cookiesM.currentUser?cookiesM.userType="existing":(cookiesM.userType="new",taskManager.addAsyncTask(function(basicData){var req=basicData.browser.platform+basicData.browser.type+basicData.browser.language+basicData.geoLocation.ip+(new Date).toString();postman.get("http://jssha.mrpeach.me",{text:req,type:"TEXT"},function(data){cookiesM.currentUser=data.hash,cookiesM.joindate=(new Date).toString(),window.localStorage.setItem("nwuUC",cookiesM.currentUser),window.localStorage.setItem("nwjd",cookiesM.joindate),taskManager.finishAsyncTask()})},cookiesM,[basicDataCollector])),console.log("Here is cookiesM object",cookiesM),cookiesM}(taskManager,basicDataCollector,postman);"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=cookiesManager:"function"==typeof define&&define.amd?define([],function(){return cookiesManager}):window.cookiesManager=cookiesManager}(taskManager,basicDataCollector,postman),function(basicDataCollector,cookiesManager,taskManager,postman){var nightsWatcher=function(basicDataCollector,cookiesManager,taskManager,postman){var watcher={user:null,visit:{},events:[],configObj:{}};return watcher.config=function(configObject){watcher.configObj=configObject},watcher.identify=function(arg1,arg2){taskManager.addAsyncTask(function(arg1,arg2){var obj={Platform:basicDataCollector.browser.platform,Browser:basicDataCollector.browser.type,Language:basicDataCollector.browser.language,Country:basicDataCollector.geoLocation.country,City:basicDataCollector.geoLocation.city,Region:basicDataCollector.geoLocation.region};"function"==typeof arg1?(watcher.user=obj,arg1(obj)):"user"===arg1&&(obj.UserId=cookiesManager.currentUser,obj.JoinDate=cookiesManager.joindate,watcher.user=obj,watcher.visit.UserId=obj.UserId,arg2(obj,cookiesManager.userType)),taskManager.finishAsyncTask()},null,[arg1,arg2])},watcher.on=function(directive,callback){if("visitingStart"===directive){var startDate=(new Date).toString();watcher.visit={Time:startDate},callback(watcher.visit)}},watcher.track=function(element,event,callback){basicDataCollector.interaction(element,event,function(trackedEvent){trackedEvent.userId=watcher.user.UserId,watcher.events.push(trackedEvent),callback(trackedEvent)})},watcher.run=function(){taskManager.addAsyncTask(function(){var self=this;postman.get(self.configObj.server,{type:1,token:self.configObj.domainToken,data:self.user},function(){postman.get(self.config.server,{type:2,token:self.configObj.domainToken,data:self.visit},function(data){self.visit.id=data,taskManager.finishAsyncTask(),console.log("1")})})},watcher),taskManager.addAsyncTask(function(){var self=this;setInterval(function(){for(var i=0;i<self.events.length;i++)self.events[i].visitId=self.visit.id;postman.get(self.configObj.server,{type:3,token:self.configObj.domainToken,data:self.events},function(){taskManager.finishAsyncTask(),self.events=[],console.log("post events")})},2e3),taskManager.finishAsyncTask()},watcher),taskManager.asyncTaskExec()},watcher}(basicDataCollector,cookiesManager,taskManager,postman);"undefined"!=typeof module&&"undefined"!=typeof module.exports?module.exports=nightsWatcher:"function"==typeof define&&define.amd?define([],function(){return nightsWatcher}):window.nightsWatcher=nightsWatcher}(basicDataCollector,cookiesManager,taskManager,postman);
+'use strict';
+
+(function(){
+  var taskManager = (function(){
+    var taskM = {};
+
+    /**
+     * use for event which will be exec after dom loaded
+     * @type {Array}
+     */
+    taskM.domTaskArray = [];
+    taskM.addTaskWhenDomLoaded = function(task){
+      taskM.domTaskArray.push(task);
+    };
+
+    /**
+     * this is the event loop
+     * @type {Array}
+     */
+    taskM.asyncTask = [];
+    taskM.addAsyncTask = function(task, self, arguArray){
+      taskM.asyncTask.push({
+        task: task,
+        self: self,
+        arguArray: arguArray
+      });
+    };
+    taskM.finishAsyncTask = function(){
+      taskM.asyncTask.shift();
+      if(taskM.asyncTask.length!==0){
+        taskM.asyncTask[0].task.apply(taskM.asyncTask[0].self, taskM.asyncTask[0].arguArray);
+      }
+    };
+    taskM.asyncTaskExec = function(){
+      if(taskM.asyncTask.length!==0){
+        taskM.asyncTask[0].task.apply(taskM.asyncTask[0].self, taskM.asyncTask[0].arguArray);
+      }
+    };
+
+
+    if(window.onload!==null){
+      var currentF = window.onload;
+      taskM.domTaskArray.push(currentF);
+    }
+    window.onload = function(){
+      for(var i=0; i<taskM.domTaskArray.length; i++){
+        taskM.domTaskArray[i]();
+      }
+    };
+    return taskM;
+  })();
+
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = taskManager;
+  }
+  else {
+    if (typeof define === 'function' && define.amd) {
+      define([], function() {
+        return taskManager;
+      });
+    }
+    else {
+      window.taskManager = taskManager;
+    }
+  }
+})();
+'use strict';
+(function(){
+  /*
+   * Lightweight JSONP fetcher
+   * Usage:
+   *
+   * postman.get( 'someUrl.php', {param1:'123', param2:'456'}, function(data){
+   *   //do something with data, which is the JSON object you should retrieve from someUrl.php
+   * });
+   */
+  var postman = (function(){
+    var counter = 0, head, config = {};
+    function load(url, pfnError) {
+      var script = document.createElement('script'),
+          done = false;
+      script.src = url;
+      script.async = true;
+
+      var errorHandler = pfnError || config.error;
+      if ( typeof errorHandler === 'function' ) {
+        script.onerror = function(ex){
+          errorHandler({url: url, event: ex});
+        };
+      }
+
+      script.onload = script.onreadystatechange = function() {
+        if ( !done && (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") ) {
+          done = true;
+          script.onload = script.onreadystatechange = null;
+          if ( script && script.parentNode ) {
+            script.parentNode.removeChild( script );
+          }
+        }
+      };
+
+      if ( !head ) {
+        head = document.getElementsByTagName('head')[0];
+      }
+      head.appendChild( script );
+    }
+    function encode(str) {
+      return encodeURIComponent(str);
+    }
+    function jsonp(url, params, callback, callbackName) {
+      var query = (url||'').indexOf('?') === -1 ? '?' : '&', key;
+
+      callbackName = (callbackName||config['callbackName']||'callback');
+      var uniqueName = callbackName + "_json" + (++counter);
+
+      params = params || {};
+      for ( key in params ) {
+        if ( params.hasOwnProperty(key) ) {
+          query += encode(key) + "=" + encode(params[key]) + "&";
+        }
+      }
+      window[ uniqueName ] = function(data){
+        callback(data);
+        try {
+          delete window[ uniqueName ];
+        } catch (e) {}
+        window[ uniqueName ] = null;
+      };
+
+      load(url + query + callbackName + '=' + uniqueName);
+      return uniqueName;
+    }
+    function setDefaults(obj){
+      config = obj;
+    }
+    return {
+      get:jsonp,
+      init:setDefaults
+    };
+  }());
+
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = postman;
+  }
+  else {
+    if (typeof define === 'function' && define.amd) {
+      define([], function() {
+        return postman;
+      });
+    }
+    else {
+      window.postman = postman;
+    }
+  }
+})();
+
+/**
+ * basicDataCollector:
+ */
+'use strict';
+
+(function(taskManager, postman){
+  var basicDataCollector = (function(taskManager, postman){
+    var collector = {};
+    /**
+     * use userAgent to detect os language and browser
+     */
+    collector.browser = (function(){
+      var browser = {
+        platform: "",
+        type: ""
+      };
+
+      taskManager.addAsyncTask(function(userAgent){
+        var self = this;
+        postman.get("http://mrpeach.me:3458", {userAgent:userAgent}, function(data){
+          self.platform = data.os.family+" "+data.os.version;
+          self.type = data.name+ " "+ data.version;
+          taskManager.finishAsyncTask();
+        });
+      }, browser, [navigator.userAgent]);
+
+      browser.language = navigator.language || navigator.userLanguage || navigator.systemLanguage;
+
+      /**
+       * the browser.url will be a array:
+       * [url, scheme, slash, host, port, path, query, hash]
+       * @type {RegExp}
+       */
+      var parse_url = /^(?:([A-Za-z]+):)?(\/{0,3})([0-9.\-A-Za-z]+)(?::(\d+))?(?:\/([^?#]*))?(?:\?([^#]*))?(?:#(.*))?$/;
+      browser.url = parse_url.exec(document.URL);
+      return browser;
+    })();
+
+    /**
+     * after dom render finished, get all the element required.
+     * In here, this function was given a element and a event.
+     * we will generate this object for callback when this element's event triggered
+     * {
+     *    tagName:
+     *    id:
+     *    className:
+     *    innerContent:
+     *    event: String
+     *    date: new Date() which this event happen
+     * }
+     */
+    collector.interactionNodeList = [];
+    collector.interaction = function(element, event, callback){
+      function eventHappen(node){
+            return function(){
+              var currentE = null;
+              if(node[event]!==null){
+                currentE = node[event];
+              }
+              node[event]= function() {
+                if(currentE!==null) currentE();
+                var re = {
+                  targetTag: node.tagName,
+                  targetId: node.id,
+                  targetClass: node.className,
+                  innerContent: node.innerText,
+                  type: event,
+                  time: new Date(),
+                  domain: collector.browser.url[3],
+                  path: collector.browser.url[5],
+                  hash: collector.browser.url[7],
+                  query: collector.browser.url[6]
+                };
+                callback(re);
+              };
+            }()
+          }
+      taskManager.addTaskWhenDomLoaded(function(){
+        var node=null, nodeList=null;
+        if(element.id!==undefined){
+          node = document.getElementById(element.id);
+          collector.interactionNodeList.push(node);
+        }else if(element.className!==undefined){
+          nodeList = document.getElementsByClassName(element.className);
+          collector.interactionNodeList.concat(nodeList);
+        }else{
+          nodeList = document.getElementsByTagName(element.element);
+          collector.interactionNodeList.concat(nodeList);
+        }
+        if(node!==null){
+          eventHappen(node);
+        }else{
+          for(var i=0; i<nodeList.length; i++){
+            eventHappen(nodeList[i]);
+          }
+        }
+      });
+    };
+
+    /**
+     * getIp and calculate location
+     * has city region country ip
+     */
+    collector.geoLocation = (function(){
+      var geoLocation = {};
+      taskManager.addAsyncTask(function(){
+        var self = this;
+        postman.get("http://ipinfo.io", null, function(data){
+          self.city = data.city;
+          self.region = data.region;
+          self.country = data.country;
+          self.ip = data.ip;
+          taskManager.finishAsyncTask();
+        });
+      }, geoLocation);
+      return geoLocation;
+    })();
+
+    console.log("Here is basicDataCollector object", collector);
+    return collector;
+  })(taskManager, postman);
+
+
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = basicDataCollector;
+  }
+  else {
+    if (typeof define === 'function' && define.amd) {
+      define([], function() {
+        return basicDataCollector;
+      });
+    }
+    else {
+      window.basicDataCollector = basicDataCollector;
+    }
+  }
+})(taskManager, postman);
+
+'use strict';
+(function(taskManager, basicDataCollector, postman){
+  var cookiesManager = (function(taskManager, basicDataCollector, postman){
+    var cookiesM = {};
+
+    cookiesM.currentUser = window.localStorage.getItem("nwuUC");
+    cookiesM.joindate = window.localStorage.getItem("nwjd");
+    /**
+     * if currentUser cookie is null, generate a new one.
+     */
+    if(!cookiesM.currentUser){
+      cookiesM.userType = "new";
+      taskManager.addAsyncTask(function(basicData){
+        var req =
+            basicData.browser.platform +
+            basicData.browser.type +
+            basicData.browser.language +
+            basicData.geoLocation.ip +
+            new Date().toString();
+        postman.get( 'http://jssha.mrpeach.me', {text:req, type:'TEXT'}, function(data){
+          cookiesM.currentUser = data.hash;
+          cookiesM.joindate = new Date().toString();
+          window.localStorage.setItem("nwuUC", cookiesM.currentUser);
+          window.localStorage.setItem("nwjd", cookiesM.joindate);
+          taskManager.finishAsyncTask();
+        });
+      }, cookiesM, [basicDataCollector]);
+    }
+    else{
+      cookiesM.userType = "existing";
+    }
+    console.log("Here is cookiesM object", cookiesM);
+    return cookiesM;
+  })(taskManager, basicDataCollector, postman);
+
+
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = cookiesManager;
+  }
+  else {
+    if (typeof define === 'function' && define.amd) {
+      define([], function() {
+        return cookiesManager;
+      });
+    }
+    else {
+      window.cookiesManager = cookiesManager;
+    }
+  }
+})(taskManager, basicDataCollector, postman);
+'use strict';
+
+(function(basicDataCollector, cookiesManager, taskManager, postman){
+  var nightsWatcher = (function(basicDataCollector, cookiesManager, taskManager, postman){
+
+    /**
+     * contains:
+     *  watcher.user = {
+     *     Platform: String,
+     *     Browser: String,
+     *     Language: String,
+     *     Country: String,
+     *     City: String,
+     *     Region: String,
+     *     UserId: String,
+     *     JoinDate: String
+     *  }
+     *  watcher.visit = {
+     *     Time: String,
+     *     UserId: String,
+     *     VisitId: //need to be generated by server
+     *  }
+     *  watcher
+     * @type {{}}
+     */
+    var watcher = {
+      user: null,
+      visit: {},
+      events: [],
+      configObj:{}
+    };
+
+    /**
+     * require
+     * @param configObject
+     */
+    watcher.config = function(configObject){
+      watcher.configObj = configObject;
+    };
+
+    watcher.identify = function(arg1, arg2){
+      taskManager.addAsyncTask(function(arg1, arg2){
+        var obj = {
+          Platform: basicDataCollector.browser.platform,
+          Browser: basicDataCollector.browser.type,
+          Language: basicDataCollector.browser.language,
+          Country: basicDataCollector.geoLocation.country,
+          City: basicDataCollector.geoLocation.city,
+          Region: basicDataCollector.geoLocation.region
+        };
+        if(typeof arg1 === 'function'){
+          watcher.user = obj;
+          arg1(obj);
+        }else{
+          if(arg1==='user'){
+            obj.UserId = cookiesManager.currentUser;
+            obj.JoinDate = cookiesManager.joindate;
+            watcher.user = obj;
+            watcher.visit.UserId = obj.UserId;
+            arg2(obj, cookiesManager.userType);
+          }
+        }
+        taskManager.finishAsyncTask();
+      }, null, [arg1, arg2]);
+    };
+
+    /**
+     * store the start event
+     * @param directive
+     * @param callback
+     */
+    watcher.on = function(directive, callback){
+      if(directive==='visitingStart'){
+        var startDate = new Date().toString();
+        watcher.visit = {
+          Time: startDate
+        };
+        callback(watcher.visit);
+      }
+    };
+
+    watcher.track = function(element, event, callback){
+      basicDataCollector.interaction(element, event, function(trackedEvent){
+        trackedEvent.userId = watcher.user.UserId;
+        watcher.events.push(trackedEvent);
+        callback(trackedEvent);
+      });
+    };
+
+    watcher.run = function(){
+      taskManager.addAsyncTask(function(){
+        var self = this;
+        postman.get(self.configObj.server, {type:1, token: self.configObj.domainToken, data: self.user}, function(data){
+          postman.get(self.config.server, {type:2, token:self.configObj.domainToken, data: self.visit}, function(data){
+            self.visit.id = data;
+            taskManager.finishAsyncTask();
+          });
+        });
+      }, watcher);
+      taskManager.addAsyncTask(function(){
+        var self = this;
+        setInterval(function(){
+          for(var i=0;  i < self.events.length; i++){
+            self.events[i].visitId = self.visit.id;
+          }
+          postman.get(self.configObj.server, {type:3, token:self.configObj.domainToken, data:self.events}, function(data){
+            taskManager.finishAsyncTask();
+            self.events = [];
+          });
+        }, 1000*2);
+        taskManager.finishAsyncTask();
+      }, watcher);
+      taskManager.asyncTaskExec();
+    };
+    return watcher;
+  })(basicDataCollector, cookiesManager, taskManager, postman);
+
+  if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = nightsWatcher;
+  }
+  else {
+    if (typeof define === 'function' && define.amd) {
+      define([], function() {
+        return nightsWatcher;
+      });
+    }
+    else {
+      window.nightsWatcher = nightsWatcher;
+    }
+  }
+})(basicDataCollector, cookiesManager, taskManager, postman);

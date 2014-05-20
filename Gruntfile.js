@@ -5,11 +5,18 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-watch");
   grunt.loadNpmTasks("grunt-contrib-clean");
   grunt.loadNpmTasks("grunt-contrib-concat");
+  grunt.loadNpmTasks("grunt-contrib-copy");
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
       all: ['Gruntfile.js', 'src/*.js']
+    },
+    copy:{
+      runner:{
+        src:"src/runner.js",
+        dest:"build/runner.js"
+      }
     },
     uglify: {
       options: {
@@ -17,12 +24,12 @@ module.exports = function(grunt) {
       },
       my_target: {
         files: {
-          'build/nights-watch.js' : [
+          'build/nights-watch.min.js' : [
             'src/taskManager.js',
             'src/postman.js',
             "src/basicDataCollector.js",
             'src/cookiesManager.js',
-            'src/nightsWatcher.js',
+            'src/nightsWatcher.js'
           ]
         }
       }
@@ -48,20 +55,30 @@ module.exports = function(grunt) {
       options: {
         separator: "\n"
       },
-      dist: {
-        src: [
+      build: {
+          src: [
+            'src/taskManager.js',
+            'src/postman.js',
+            "src/basicDataCollector.js",
+            'src/cookiesManager.js',
+            'src/nightsWatcher.js'
+          ],
+          dest: 'build/nights-watch.js'
+      },
+      dev: {
+          src: [
             'src/taskManager.js',
             'src/postman.js',
             "src/basicDataCollector.js",
             'src/cookiesManager.js',
             'src/nightsWatcher.js',
             'src/runner.js'
-        ],
-        dest: 'demo/development.js'
+          ],
+          dest: 'demo/development.js'
       }
     }
   });
 
-  grunt.registerTask('default', ['clean', 'concat', 'connect', 'watch']);
-  grunt.registerTask('build', ['clean', 'uglify', 'connect', 'watch']);
+  grunt.registerTask('default', ['clean', 'concat:dev', 'connect', 'watch']);
+  grunt.registerTask('build', ['clean', 'uglify', 'concat:build', 'copy']);
 };

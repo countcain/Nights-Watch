@@ -94,7 +94,6 @@
           postman.get(self.config.server, {type:2, token:self.configObj.domainToken, data: self.visit}, function(data){
             self.visit.id = data;
             taskManager.finishAsyncTask();
-            console.log("1");
           });
         });
       }, watcher);
@@ -107,7 +106,6 @@
           postman.get(self.configObj.server, {type:3, token:self.configObj.domainToken, data:self.events}, function(data){
             taskManager.finishAsyncTask();
             self.events = [];
-            console.log("post events");//take site token and type
           });
         }, 1000*2);
         taskManager.finishAsyncTask();

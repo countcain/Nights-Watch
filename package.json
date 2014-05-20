@@ -1,7 +1,7 @@
 {
   "name" : "nights-watch",
   "description" : "Watch the user's behavior when they visit a website page. ",
-  "version" : "0.0.1",
+  "version" : "0.1.0",
   "author": "Cain Wong <countcainht@gmail.com>",
   "homepage": "https://github.com/countcain/Nights-Watch",
   "repository": {
@@ -23,7 +23,8 @@
     "grunt-contrib-connect": "~0.7.1",
     "grunt-contrib-watch": "~0.6.1",
     "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-concat": "~0.4.0"
+    "grunt-contrib-concat": "~0.4.0",
+    "grunt-contrib-copy": "~0.5.0"
   },
   "scripts" : {
     "start" : "grunt",
