@@ -3,27 +3,54 @@ Nights-Watch
 
 Watch the user's behavior when they visit a website page.
 
+For simple use, just:
+
     npm install nights-watch
 
-#Installation
+Script in
+	
+	build/nights-watch.js
+	build/nights-watch.min.js
 
-1. npm install & bower install
-2. npm start
+is the core funciton
+
+You can refer
+	
+	build/runner.js
+	
+to learn how to use this script.
+
+
+
+#Development
+
+clone this rep.
+
+##Installation & Run
+
+	npm install & bower install
+	npm start
+
+##build
+
+	npm build
 
 Open the browser and navigate to localhost:9001 to see the demo.
 
-#Usage
+##Usage
 
 Currently, we have following methods for detecting and tracking users behaviors which returns the data as data format shows.
 
-#Data Format
+...
+
+##Data Format
 > This tool's power comes from automatically capturing all the user interactions that happen in visitors' browser.This data is sanitized and organized into the following hierarchy for you, where users have many visits and visits have many events.
 
 ![Imgur](http://i.imgur.com/puakWWX.png?1)
 
 Properties of each object are as follows.
 
-##Events
+###Events
 
 All the raw client-side actions users performed in target website. It contains the following properties:
 
@@ -40,7 +67,7 @@ All the raw client-side actions users performed in target website. It contains t
 * **`Hash`**: the part of the current URL following the hash sign, e.g. **#header** for **blog.mrpeach.me/analytics/dataformat#header**.
 * **`Query`**: the query params of the page's current URL, e.g. **utm_id=1234** for **blog.mrpeach.me?utm_id=1234**.
 
-##Visits
+###Visits
 
 A visit, also called a session, is a set of events no more than 30 minutes apart from each other. It contains the following properties:
 
@@ -48,7 +75,7 @@ A visit, also called a session, is a set of events no more than 30 minutes apart
 * **`User Id`**: ID of associated user.
 * **`Time`**: timestamp when visit began.
 
-##Users
+###Users
 
 A user maps directly to a unique client-side cookie. It contains the following properties:
 
