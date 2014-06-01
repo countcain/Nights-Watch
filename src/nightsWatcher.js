@@ -91,7 +91,7 @@
       taskManager.addAsyncTask(function(){
         var self = this;
         postman.get(self.configObj.server, {type:1, token: self.configObj.domainToken, data: self.user}, function(data){
-          postman.get(self.config.server, {type:2, token:self.configObj.domainToken, data: self.visit}, function(data){
+          postman.get(self.configObj.server, {type:2, token:self.configObj.domainToken, data: self.visit}, function(data){
             self.visit.id = data;
             taskManager.finishAsyncTask();
           });

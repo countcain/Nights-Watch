@@ -90,9 +90,9 @@
         if(node!==null){
           eventHappen(node);
         }else{
-          for(var i=0; i<nodeList.length; i++){
-            eventHappen(nodeList[i]);
-          }
+          if(nodeList!==null)
+            for(var i=0; i<nodeList.length; i++)
+              eventHappen(nodeList[i]);
         }
       });
     };
