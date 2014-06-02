@@ -1,7 +1,7 @@
 {
   "name" : "nights-watch",
   "description" : "Watch the user's behavior when they visit a website page. ",
-  "version" : "0.1.1",
+  "version" : "0.1.2",
   "author": "Cain Wong <countcainht@gmail.com>",
   "homepage": "https://github.com/countcain/Nights-Watch",
   "repository": {
