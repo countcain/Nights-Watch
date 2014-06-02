@@ -90,8 +90,13 @@
     watcher.run = function(){
       taskManager.addAsyncTask(function(){
         var self = this;
-        postman.get(self.configObj.server, {type:1, token: self.configObj.domainToken, data: self.user}, function(data){
-          postman.get(self.configObj.server, {type:2, token:self.configObj.domainToken, data: self.visit}, function(data){
+        self.user.type = 1;
+        self.user.token = self.configObj.domainToken;
+
+        self.visit.type =2;
+        self.visit.token = self.configObj.domainToken;
+        postman.get(self.configObj.server, self.user, function(data){
+          postman.get(self.configObj.server, self.visit, function(data){
             self.visit.id = data;
             taskManager.finishAsyncTask();
           });
