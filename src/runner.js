@@ -55,6 +55,7 @@
     console.log("runner track event", trackedEvent);
   });
   nightsWatcher.track({element:"a"}, "onmouseover", function(trackedEvent){
+    console.log("runner track event", trackedEvent);
   });
 
   nightsWatcher.run();

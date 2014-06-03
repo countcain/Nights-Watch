@@ -102,6 +102,21 @@
           });
         });
       }, watcher);
+
+      taskManager.addAsyncTask(function(){
+        var self = this;
+        self.events.push({
+          type: "view page",
+          time: new Date(),
+          domain: basicDataCollector.browser.url[3],
+          path: basicDataCollector.browser.url[5],
+          hash: basicDataCollector.browser.url[7],
+          query: basicDataCollector.browser.url[6],
+          userId: self.user.UserId
+        });
+        taskManager.finishAsyncTask();
+      }, watcher)
+
       taskManager.addAsyncTask(function(){
         var self = this;
         setInterval(function(){
