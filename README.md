@@ -56,12 +56,12 @@ All the raw client-side actions users performed in target website. It contains t
 
 * **`Type`**: any of **view page**, **click**.
 * **`Time`**: when the event happened.
-* **`User Id`**: ID of associated user.
-* **`Visit Id`**: ID of associated visit/session.
-* **`Target Tag`**: tagname of the event target's DOM element, e.g. **INPUT**, **BUTTON**, or **A**.
-* **`Target Id`**: id of the event target's DOM element, e.g. **#login**.
-* **`Target Class`**: classname of the event target's DOM element, e.g. **.primary-btn**.
-* **`Href`**: **href** property of link. (for **click** on anchor tags)
+* **`UserId`**: ID of associated user.
+* **`VisitId`**: ID of associated visit/session.
+* **`TargetTag`**: tagname of the event target's DOM element, e.g. **INPUT**, **BUTTON**, or **A**.
+* **`TargetId`**: id of the event target's DOM element, e.g. **#login**.
+* **`TargetClass`**: classname of the event target's DOM element, e.g. **.primary-btn**.
+* **`InnerContent`**: **href** property of link. (for **click** on anchor tags)
 * **`Domain`**: the current domain including subdomain, e.g. **blog.mrpeach.com**.
 * **`Path`**: the part of the current URL following your domain, e.g. **archives/** for **blog.mrpeach.me/archives/**.
 * **`Hash`**: the part of the current URL following the hash sign, e.g. **#header** for **blog.mrpeach.me/analytics/dataformat#header**.
@@ -71,16 +71,16 @@ All the raw client-side actions users performed in target website. It contains t
 
 A visit, also called a session, is a set of events no more than 30 minutes apart from each other. It contains the following properties:
 
-* **`Visit Id`**: auto-incrementing ID, starts at 0 for each individual user.
-* **`User Id`**: ID of associated user.
+* **`VisitId`**: auto-incrementing ID, starts at 0 for each individual user.
+* **`UserId`**: ID of associated user.
 * **`Time`**: timestamp when visit began.
-
+* **`Site`**: the domain to which this visit belongs.
 ###Users
 
 A user maps directly to a unique client-side cookie. It contains the following properties:
 
-* **`User Id`**: randomly generated user ID.
-* **`Joindate`**: timestamp when the user joined.
+* **`UserId`**: randomly generated user ID.
+* **`JoinDate`**: timestamp when the user joined.
 * **`Platform`**: user's operating system.
 * **`Browser`**: user's browser.
 * **`Language`**: user's agent language.

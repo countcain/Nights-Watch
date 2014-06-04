@@ -13,7 +13,7 @@
      *     City: String,
      *     Region: String,
      *     UserId: String,
-     *     JoinDate: String
+     *     JoinDate: Int
      *  }
      *  watcher.visit = {
      *     Time: String,
@@ -83,7 +83,7 @@
 
     watcher.track = function(element, event, callback){
       basicDataCollector.interaction(element, event, function(trackedEvent){
-        trackedEvent.userId = watcher.user.UserId;
+        trackedEvent.UserId = watcher.user.UserId;
         watcher.events.push(trackedEvent);
         callback(trackedEvent);
       });
@@ -108,13 +108,17 @@
       taskManager.addAsyncTask(function(){
         var self = this;
         self.events.push({
-          type: "view page",
-          time: new Date().getTime(),
-          domain: basicDataCollector.browser.url[3],
-          path: basicDataCollector.browser.url[5],
-          hash: basicDataCollector.browser.url[7],
-          query: basicDataCollector.browser.url[6],
-          userId: self.user.UserId
+          Type: "viewpage",
+          Time: new Date().getTime(),
+          Domain: basicDataCollector.browser.url[3],
+          Path: basicDataCollector.browser.url[5],
+          Hash: basicDataCollector.browser.url[7] || "",
+          Query: basicDataCollector.browser.url[6] || "",
+          UserId: self.user.UserId,
+          TargetTag: "",
+          TargetId: "",
+          TargetClass: "",
+          InnerContent: ""
         });
         taskManager.finishAsyncTask();
       }, watcher);
@@ -123,7 +127,7 @@
         var self = this;
         setInterval(function(){
           for(var i=0;  i < self.events.length; i++){
-            self.events[i].visitId = self.visit.id;
+            self.events[i].VisitId = self.visit.id || "";
           }
           postman.get(self.configObj.server, {type:3, token:self.configObj.domainToken, data:JSON.stringify(self.events)}, function(data){
             self.events = [];

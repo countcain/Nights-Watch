@@ -60,16 +60,16 @@
               node[event]= function() {
                 if(currentE!==null) currentE();
                 var re = {
-                  targetTag: node.tagName,
-                  targetId: node.id,
-                  targetClass: node.className,
-                  innerContent: node.innerText,
-                  type: event,
-                  time: new Date().getTime(),
-                  domain: collector.browser.url[3],
-                  path: collector.browser.url[5],
-                  hash: collector.browser.url[7],
-                  query: collector.browser.url[6]
+                  TargetTag: node.tagName,
+                  TargetId: node.id,
+                  TargetClass: node.className,
+                  InnerContent: node.innerText,
+                  Type: event,
+                  Time: new Date().getTime(),
+                  Domain: collector.browser.url[3],
+                  Path: collector.browser.url[5],
+                  Hash: collector.browser.url[7] || "",
+                  Query: collector.browser.url[6] || ""
                 };
                 callback(re);
               };
