@@ -19,7 +19,7 @@
             new Date().toString();
         postman.get( 'http://jssha.mrpeach.me', {text:req, type:'TEXT'}, function(data){
           cookiesM.currentUser = data.hash;
-          cookiesM.joindate = new Date().toString();
+          cookiesM.joindate = new Date().getTime();
           window.localStorage.setItem("nwuUC", cookiesM.currentUser);
           window.localStorage.setItem("nwjd", cookiesM.joindate);
           taskManager.finishAsyncTask();

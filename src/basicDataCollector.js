@@ -65,7 +65,7 @@
                   targetClass: node.className,
                   innerContent: node.innerText,
                   type: event,
-                  time: new Date(),
+                  time: new Date().getTime(),
                   domain: collector.browser.url[3],
                   path: collector.browser.url[5],
                   hash: collector.browser.url[7],
