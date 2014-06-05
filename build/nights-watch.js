@@ -443,7 +443,7 @@
         self.visit.token = self.configObj.domainToken;
         postman.get(self.configObj.server, self.user, function(data){
           postman.get(self.configObj.server, self.visit, function(data){
-            self.visit.id = data;
+            self.visit.VisitId = data._id;
             taskManager.finishAsyncTask();
           });
         });
@@ -471,7 +471,7 @@
         var self = this;
         setInterval(function(){
           for(var i=0;  i < self.events.length; i++){
-            self.events[i].VisitId = self.visit.id || "";
+            self.events[i].VisitId = self.visit.VisitId || "";
           }
           postman.get(self.configObj.server, {type:3, token:self.configObj.domainToken, data:JSON.stringify(self.events)}, function(data){
             self.events = [];
