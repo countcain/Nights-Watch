@@ -8,16 +8,16 @@ For simple use, just:
     npm install nights-watch
 
 Script in
-	
-	build/nights-watch.js
-	build/nights-watch.min.js
+    
+    build/nights-watch.js
+    build/nights-watch.min.js
 
-is the core funciton
+is the core function
 
 You can refer
-	
-	build/runner.js
-	
+    
+    build/runner.js
+    
 to learn how to use this script.
 
 
@@ -28,18 +28,18 @@ clone this rep.
 
 ##Installation & Run
 
-	npm install & bower install
-	npm start
+    npm install & bower install
+    npm start
 
 ##build
 
-	npm build
+    npm build
 
 Open the browser and navigate to localhost:9001 to see the demo.
 
 ##Usage
 
-Currently, we have following methods for detecting and tracking users behaviors which returns the data as data format shows.
+Currently, we have following methods for detecting and tracking users behaviors which return the data as data format shows.
 
 ...
 
@@ -87,8 +87,3 @@ A user maps directly to a unique client-side cookie. It contains the following p
 * **`Country`**: geolocation data.
 * **`Region`**: geolocation data.
 * **`City`**: geolocation data.
-
-
-
-
-
